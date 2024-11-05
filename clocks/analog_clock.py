@@ -12,8 +12,16 @@ class AnalogClock(BaseAnalogClock):
         self.second_angle = 0.0
         self.day_night_division = DayNightDivision.AM
 
-    def set_date_time(self, year: int, month: int, day: int, hour_angle: float, minute_angle: float,
-                      second_angle: float, day_night_division: DayNightDivision):
+    def set_date_time(
+        self,
+        year: int,
+        month: int,
+        day: int,
+        hour_angle: float,
+        minute_angle: float,
+        second_angle: float,
+        day_night_division: DayNightDivision,
+    ):
         self.year = year
         self.month = month
         self.day = day

@@ -18,7 +18,7 @@ class DigitalClockAdapter(BaseDigitalClock):
 
         :param analog_clock: Экземпляр аналоговых часов для адаптации.
         """
-        self.analog_clock = analog_clock
+        self._analog_clock = analog_clock
 
     def set_date_time(self, date: datetime):
         """
@@ -29,7 +29,7 @@ class DigitalClockAdapter(BaseDigitalClock):
         hour_angle, minute_angle, second_angle, day_night_division = (
             self._convert_time_to_angles(date.hour, date.minute, date.second)
         )
-        self.analog_clock.set_date_time(
+        self._analog_clock.set_date_time(
             year=date.year,
             month=date.month,
             day=date.day,
@@ -45,9 +45,9 @@ class DigitalClockAdapter(BaseDigitalClock):
 
         :return Дату и время в формате datetime.
         """
-        year = self.analog_clock.get_year()
-        month = self.analog_clock.get_month()
-        day = self.analog_clock.get_day()
+        year = self._analog_clock.get_year()
+        month = self._analog_clock.get_month()
+        day = self._analog_clock.get_day()
         hour, minute, second = self._convert_angles_to_time()
         return datetime(year, month, day, hour, minute, second)
 
@@ -80,18 +80,18 @@ class DigitalClockAdapter(BaseDigitalClock):
         :return Преобразованные часы, минуты, секунды.
         """
         hour = (
-            self.analog_clock.get_hour_angle() // TimeConsts.HOUR_TO_DEGREES
+            self._analog_clock.get_hour_angle() // TimeConsts.HOUR_TO_DEGREES
         ) % TimeConsts.HOURS
         if (
-            self.analog_clock.day_night_division == DayNightDivision.PM.value
+            self._analog_clock.day_night_division == DayNightDivision.PM.value
             and hour != TimeConsts.MIDDLE_DAY
         ):
             hour += TimeConsts.HOURS
         elif (
-            self.analog_clock.day_night_division == DayNightDivision.AM.value
+            self._analog_clock.day_night_division == DayNightDivision.AM.value
             and hour == TimeConsts.MIDDLE_DAY
         ):
             hour = hour
-        minute = self.analog_clock.get_minute_angle() // TimeConsts.MINUTE_TO_DEGREES
-        second = self.analog_clock.get_second_angle() // TimeConsts.SECOND_TO_DEGREES
+        minute = self._analog_clock.get_minute_angle() // TimeConsts.MINUTE_TO_DEGREES
+        second = self._analog_clock.get_second_angle() // TimeConsts.SECOND_TO_DEGREES
         return int(hour), int(minute), int(second)
